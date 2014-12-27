@@ -1,0 +1,60 @@
+<div class="col-md-offset-2 actions_menu">
+	<button data-toggle="modal" data-target="#addCapmaignModal" type="button" class="btn btn-primary"> {{translations.actions_text.add_new_user}} <span class="glyphicon glyphicon-plus"></span></button>
+</div>
+<div class="table-responsive col-md-8 col-md-offset-2">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="col-md-2">First Name</th>
+				<th class="col-md-2">Last Name</th>
+				<th class="col-md-2">Email</th>
+				<th class="col-md-2">Provision</th>
+				<th class="col-md-2">Data Created</th>
+				<th class="col-md-2">Actions</th>
+			</tr>
+		</thead>
+		
+		<tbody class="table-striped">
+			<tr ng-repeat="item in companyUsers">
+				
+				<td>{{item.first_name}}</td>
+				<td>{{item.last_name}}</td>
+				<td>{{item.email}}</td>
+				<td> {{provisionTranslator(item.provision)}}</td>
+				<td>{{item.creation_date}}</td>
+				<td> <button ng-disabled="item.provision == 4" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td>
+			</tr>
+
+		</tbody>
+	</table>
+</div>
+<!-- START modals -->
+
+<div class="modal fade" id="addUserModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Add Company User</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>  First Name </label>
+					<input ng-model="newUser.first_name" name="firstName" type="text" class="form-control" placeholder="Please Enter User First Name">
+				</div>
+				<div class="form-group">
+					<label> Last Name  </label>
+					<input ng-model="newUser.last_name" name="lastName" type="text" class="form-control" placeholder="Please Enter User Last Name">
+				</div>
+				<div class="form-group">
+					<label> Email  </label>
+					<input ng-model="newUser.email" name="email" type="text" class="form-control" placeholder="Please Enter User Email">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button ng-click="saveNewCompnay(newCompany)" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo
+	<!-- END modals -->

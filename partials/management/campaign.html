@@ -1,0 +1,137 @@
+<div class="col-md-offset-2 actions_menu">
+<div class="col-md-offset-2 actions_menu">
+	<button data-toggle="modal" data-target="#addCapmaignModal" type="button" class="btn btn-primary"> {{translations.actions_text.add_new_campaign}} <span class="glyphicon glyphicon-plus"></span></button>
+
+
+</div>
+<div class="page_filters col-md-2">
+	<h2> {{translations.common.filters}}</h2>
+	<div class="form-group">
+		<label> {{translations.common.status}}  </label>
+		<select  ng-model="filters.status" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="ACTIVE"> {{translations.common.active}} </option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label> {{translations.common.package}}  </label>
+		<select  ng-model="filters.packageType" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="GOLD"> {{translations.common.gold}} </option>
+			<option value="SILVER"> {{translations.common.silver}} </option>
+			<option value="BRONZE"> {{translations.common.bronze}} </option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<label> {{translations.common.member_since}}  </label>
+		<select  ng-init="direction = true" ng-model="direction" class="form-control">
+			<option value="false"> {{translations.common.sort_by_last}} </option>
+			<option value="true"> {{translations.common.sort_by_first}} </option>
+		</select>
+	</div>
+	<!--div class="form-group">
+		<label> {{translations.common.interests}}  </label>
+		<select  ng-model="filters.category" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="sport"> {{translations.categories.sport}} </option>
+			<option value="movies"> {{translations.categories.movies}} </option>
+		</select-->
+</div>
+<div class="table-responsive col-md-10">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+
+				<th class="col-md-2">{{translations.common.title}}</th>
+				<th class="col-md-2">{{translations.common.creation_date}}</th>
+                <th class="col-md-6">{{translations.common.packages}}</th>
+				<th class="col-md-2">{{translations.common.actions}}</th>
+			</tr>
+		</thead>
+
+		<tbody class="table-striped">
+			<tr ng-repeat="item in companyCampaigns">
+
+				<td>{{item.campaign_title}}</td>
+				<td>{{item.creation_date}}</td>
+                <td>
+                    <div  class="col-md-3" ng-repeat="package in item.packages">
+
+                        <a href="#edit_campaign/campaign/{{item.id}}/package/{{package.id}}">
+                            <button  type="button"  class="btn btn-lg btn-primary">
+                                <img class="img img-circle package_icon" src="static/images/System_Admin/Packages/{{package.image_name}}">
+                            </button>
+                        </a>
+
+
+                    </div>
+               </td>
+				<td> <button ng-disabled="item.provision == 4" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td>
+			</tr>
+
+		</tbody>
+	</table>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="addCapmaignModal">
+	<div style="width: 70%" class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Add Admin User</h4>
+			</div>
+			<div class="modal-body col-md-12">
+				<div class="form-group">
+					<label>  {{translations.common.campaign_title}} </label>
+					<input ng-model="newCampaign.campaign_title" name="title" type="text" class="form-control" placeholder={{translations.common.campaign_title}}>
+				</div>
+                <div  class="form-group">
+                    <label class="col-md-12">  {{translations.common.package}} </label>
+                    <div  ng-click="setCurrentTab(campaign_types.indexOf(item))" ng-class="{'active': tab == campaign_types.indexOf(item) }" class="col-md-3 campaign_types_icons selectable" ng-repeat="item in campaign_types">
+                        <h3> {{item.title}}</h3>
+                        <img src="static/images/System_Admin/Packages/{{item.image_name}}">
+                        <div> {{item.click_value}} {{item.currency}} / {{translations.common.click}} </div>
+                        <div>
+                            <button type="button" class="btn btn-lg btn-primary" data-placement="bottom" trigger="hover" data-animation="am-flip-x" bs-popover="popovers[item.title]">
+                                {{translations.common.show_sizes}}
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label>  {{translations.common.spend_limit}} </label>
+                            <input ng-model="item.spend_limit" name="title" type="text" class="form-control" placeholder="Please Enter User First Name">
+                        </div>
+
+                    </div>
+                </div>
+                <!--div class="form-group">
+                    <label>  {{translations.common.spend_limit}} </label>
+                    <input ng-model="newCampaign.spend_limit" name="title" type="text" class="form-control" placeholder="Please Enter User First Name">
+                </div-->
+				<!--div class="form-group">
+					<label>
+						Choose Main Image
+					</label>
+					<input style="float:left" type="file" class="form-control" ng-file-select="onCampaignMainImageSelect($files , 'Avi')">
+					<p style="color:red" ng-show="mainImageError"> {{ mainImageErrorText }}</p>
+				</div-->
+				<!--div class="form-group">
+					<label>
+						Choose Header Image
+					</label>
+					<input style="float:left" type="file" class="form-control" ng-file-select="onCampaignHeaderImageSelect($files , 'Avi')">
+					<p style="color:red" ng-show="headerImageError"> {{ headerImageErrorText }}</p>
+				</div-->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"> {{translations.common.close}}</button>
+				<button ng-click="saveNewCampaigns(newCampaign)" type="button" class="btn btn-primary" data-dismiss="modal"> {{translations.common.save}}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo
+	<!-- END modals -->

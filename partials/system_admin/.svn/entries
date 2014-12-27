@@ -1,0 +1,28 @@
+10
+
+dir
+0
+http://svn.kampyle.net/Kampyle_beta/branches/2.27/code_tests/SystemAdmin/partials/system_admin
+http://svn.kampyle.net/Kampyle_beta
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+9a0ecb21-1acd-454f-9b50-b63d419a8923
+

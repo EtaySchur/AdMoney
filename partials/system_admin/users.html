@@ -1,0 +1,203 @@
+<h1 align="center"> {{translations.page_titles.users}}</h1>
+<div class="col-md-offset-2 actions_menu">
+	<button data-toggle="modal" data-target="#addCategoryModal" type="button" class="btn btn-success"> {{translations.actions_text.add_new_category}} <span class="glyphicon glyphicon-plus"></span></button>
+</div>
+<div class="page_filters col-md-2">
+	<h2> {{translations.common.filters}}</h2>
+	<div class="form-group">
+		<label> {{translations.common.status}}  </label>
+		<select  ng-model="filters.status" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="ACTIVE"> {{translations.common.active}} </option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label> {{translations.common.gender}}  </label>
+		<select  ng-model="filters.gender" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="MALE"> {{translations.common.male}} </option>
+			<option value="FEMALE"> {{translations.common.female}} </option>
+		</select>
+	</div>
+	
+	<div class="form-group">
+		<label> {{translations.common.member_since}}  </label>
+		<select  ng-init="direction = true" ng-model="direction" class="form-control">
+			<option value="false"> {{translations.common.sort_by_last}} </option>
+			<option value="true"> {{translations.common.sort_by_first}} </option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label> {{translations.common.interests}}  </label>
+		<select  ng-model="filters.category" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="sport"> {{translations.categories.sport}} </option>
+			<option value="movies"> {{translations.categories.movies}} </option>
+		</select>
+	</div>
+</div>
+
+<div class="table-responsive col-md-9">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="col-md-1">{{translations.common.first_name}}</th>
+				<th class="col-md-1">{{translations.common.last_name}}</th>
+				<th class="col-md-1">{{translations.common.email}}</th>
+				<th class="col-md-1">{{translations.common.member_since}}</th>
+				<th class="col-md-1">{{translations.common.realizations}}</th>
+				<th class="col-md-1">{{translations.common.interests}}</th>
+				<th class="col-md-1">{{translations.common.city}}</th>
+				<th class="col-md-1">{{translations.common.gender}}</th>
+				<th class="col-md-1">{{translations.common.push}}</th>
+				<th class="col-md-1">{{translations.common.status}}</th>
+
+				<th class="col-md-2">{{translations.common.actions}}</th>
+			</tr>
+		</thead>
+
+		<tbody class="table-striped ">
+			<tr  ng-repeat="item in users | isStatus:filters.status | isGender:filters.gender | orderBy:filters.sortType:direction | isCategory:filters.category | filter:query | dateRangeFilter:filters.datesFilter">
+				<td>{{item.first_name}}</td>
+				<td>{{item.last_name}}</td>
+				<td>{{item.email}}</td>
+				<td>{{item.creation_date}}</td>
+				<td> 
+
+					<button align="center" ng-click="setCurrentItem(users.indexOf(item))" data-toggle="modal" data-target="#viewRealizationModal" class="btn btn-sm btn-primary"> 
+						{{item.realizations.length }}
+
+					</button>
+
+
+				</td>
+				<td> 
+
+					<button align="center" ng-click="setCurrentItem(users.indexOf(item))" data-toggle="modal" data-target="#viewCategoriesModal" class="btn btn-sm btn-primary"> 
+						{{item.categories.length }}
+
+					</button>
+
+
+				</td>
+				<td>{{item.city}}</td>
+				<td>{{item.gender}}</td>
+				<td>{{booleanTranslator(item.push_confirmation)}}</td>
+				<td>{{item.status}}</td>
+
+				<td> <button  class="btn  btn-sm btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- START modals -->
+
+<div class="modal fade" id="addCategoryModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Add Category</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>  Category Title </label>
+					<input ng-model="category.title" name="title" type="text" class="form-control" placeholder="Please Enter Category Title">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button ng-click="saveNewCategory(category)" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo -->
+</div>
+<div class="modal fade" id="viewRealizationModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title"> User Realizations </h4>
+			</div>
+			<div class="modal-body">
+				<div class="realizations_list_labels">
+					<div class="form-group col-md-3">
+						<label>  {{translations.common.coupon_name}}  </label>
+					</div>
+					<div class="form-group col-md-3">
+						<label>  {{translations.common.company_name}}  </label>
+					</div>
+					<div class="form-group col-md-3">
+						<label>  {{translations.common.creation_date}}  </label>
+					</div>
+					<div class="form-group col-md-2">
+						<label>  {{translations.common.value}}  </label>
+					</div>
+					<div class="form-group col-md-1">
+						<label>  {{translations.common.used}}   </label>
+					</div>
+				</div>
+				<div class="realizations_list col-md-12" ng-repeat="realization in users[currentIndex].realizations">
+					<div class="form-group col-md-3">
+
+						<div> {{ realization.coupon_details.title }}</div>
+					</div>
+					<div class="form-group col-md-3">
+
+						<div> {{ realization.company_details.title }}</div>
+					</div>
+					<div class="form-group col-md-3">
+
+						<div> {{ realization.creation_date }}</div>
+					</div>
+					<div class="form-group col-md-2">
+
+						<div> {{ realization.coupon_details.value }}</div>
+					</div>
+					<div class="form-group col-md-1">
+						<div> {{ booleanTranslator(realization.used) }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo -->
+</div>
+<div class="modal fade" id="viewCategoriesModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title"> User Categories </h4>
+			</div>
+			<div class="modal-body">
+				<div class="realizations_list_labels">
+					<div class="form-group col-md-6">
+						<label>  {{translations.common.title}}  </label>
+					</div>
+					<div class="form-group col-md-6">
+						<label>  {{translations.common.creation_date}}  </label>
+					</div>
+				</div>
+				<div class="categories" ng-repeat="category in users[currentIndex].categories">
+					<div class="form-group col-md-6">
+
+						<div> {{translations.categories[category.title]}}</div>
+					</div>
+					<div class="form-group col-md-6">
+
+						<div> {{ category.creation_date }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo -->
+</div>
+
+<!-- END modals -->

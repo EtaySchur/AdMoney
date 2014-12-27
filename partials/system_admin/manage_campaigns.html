@@ -1,0 +1,94 @@
+<div class="col-md-offset-2 actions_menu">
+    <button data-toggle="modal" data-target="#addNewCampaignType" type="button" class="btn btn-success"> {{translations.actions_text.add_new_campaign_type}} <span class="glyphicon glyphicon-plus"></span></button>
+</div>
+
+
+            <div  class="col-md-offset-2 col-md-10 align_center campaign_types">
+                <div  class="col-md-3" ng-repeat="item in campaign_types" ng-mouseenter='show_actions_icons = true' ng-mouseleave='show_actions_icons = false'>
+                    <h3> {{item.title}}</h3>
+                    <img src="static/images/System_Admin/Packages/{{item.image_name}}">
+                    <div> {{item.click_value}} {{item.currency}} / {{translations.common.click}} </div>
+                    <div> {{item.images_width}} * {{item.images_height}}  </div>
+                    <div ng-show="show_actions_icons" class="actions_icons fadein fadeout">
+                        <button data-toggle="modal" data-target="#editCampaign" class="btn btn-primary" ng-click='setCurrentItem(campaign_types.indexOf(item));saveModel()'>
+                        <span  class="glyphicon glyphicon-pencil">  </span>
+                            </button>
+                        <button class="btn btn-danger">
+                            <span class="glyphicon glyphicon-trash">  </span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+<!-- START modals -->
+
+<div class="modal fade" id="addNewCampaignType">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Add New Campaign Type</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>  {{ translations.common.title }} </label>
+                    <input ng-model="newCampaign.title" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Title">
+                </div>
+                <div class="form-group">
+                        <label>  {{ translations.common.click_value }} </label>
+                    <input ng-model="newCampaign.click_value" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Click Value">
+                </div>
+                <div class="form-group">
+                    <label>  {{ translations.common.image_width }} </label>
+                    <input ng-model="newCampaign.images_width" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Image Width">
+                </div>
+                <div class="form-group">
+                    <label>  {{ translations.common.image_height }} </label>
+                    <input ng-model="newCampaign.images_height" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Image Height">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ translations.common.close }}</button>
+                <button ng-click="saveNewCategory(category)" type="button" class="btn btn-primary" data-dismiss="modal">{{ translations.common.save }}</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialo -->
+</div>
+
+<div class="modal fade" id="editCampaign">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Edit Campaign</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>  {{ translations.common.title }} </label>
+                    <input ng-model='campaign_types[currentIndex].title' name="title" type="text" class="form-control" placeholder="Please Enter Campaign Title">
+                </div>
+                <div class="form-group">
+                    <label>  {{ translations.common.click_value }} </label>
+                    <input ng-model="campaign_types[currentIndex].click_value" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Click Value">
+                </div>
+                <div class="form-group">
+                    <label>  {{ translations.common.image_width }} </label>
+                    <input ng-model="campaign_types[currentIndex].images_width" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Image Width">
+                </div>
+                <div class="form-group">
+                    <label>  {{ translations.common.image_height }} </label>
+                    <input ng-model="campaign_types[currentIndex].images_height" name="title" type="text" class="form-control" placeholder="Please Enter Campaign Image Height">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="initData()">{{ translations.common.close }}</button>
+                <button ng-click="saveCategory(category)" type="button" class="btn btn-primary" data-dismiss="modal">{{ translations.common.save }}</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialo -->
+</div>
+
+<!-- END modals -->

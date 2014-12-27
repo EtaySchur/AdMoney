@@ -1,0 +1,174 @@
+<h1 align="center"> {{translations.page_titles.companies}} </h1>
+<div class="col-md-offset-2 actions_menu">
+	<button data-toggle="modal" data-target="#addNewCompanyModal" type="button" class="btn btn-primary">  {{translations.actions_text.add_new_company}}<span class="glyphicon glyphicon-plus"></span></button>
+</div>
+<div class="page_filters col-md-2">
+	<h2> {{translations.common.filters}}</h2>
+	<div class="form-group">
+		<label> {{translations.common.status}}  </label>
+		<select  ng-model="filters.status" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="ACTIVE"> {{translations.common.active}} </option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label> {{translations.common.package}}  </label>
+		<select  ng-model="filters.packageType" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="GOLD"> {{translations.common.gold}} </option>
+			<option value="SILVER"> {{translations.common.silver}} </option>
+			<option value="BRONZE"> {{translations.common.bronze}} </option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<label> {{translations.common.member_since}}  </label>
+		<select  ng-init="direction = true" ng-model="direction" class="form-control">
+			<option value="false"> {{translations.common.sort_by_last}} </option>
+			<option value="true"> {{translations.common.sort_by_first}} </option>
+		</select>
+	</div>
+	<!--div class="form-group">
+		<label> {{translations.common.interests}}  </label>
+		<select  ng-model="filters.category" class="form-control">
+			<option value="ALL"> {{translations.common.all}} </option>
+			<option value="sport"> {{translations.categories.sport}} </option>
+			<option value="movies"> {{translations.categories.movies}} </option>
+		</select-->
+</div>
+<div class="table-responsive col-md-8">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="col-md-2">{{translations.common.company_name}}</th>
+				<th class="col-md-1">{{translations.common.phone}}</th>
+				<th class="col-md-1">{{translations.common.package}}</th>
+				<th class="col-md-2">{{translations.common.creation_date}}</th>
+				<th class="col-md-1">{{translations.common.email}}</th>
+				<th class="col-md-1">{{translations.common.realizations}}</th>
+				<th class="col-md-2">{{translations.common.address}}</th>
+				<th class="col-md-2">{{translations.common.actions}}</th>
+			</tr>
+		</thead>
+
+		<tbody class="table-striped">
+			<tr ng-repeat="item in companies | orderBy:filters.sortType:direction | isPackage:filters.packageType | dateRangeFilter:filters.datesFilter | filter:query">
+
+				<td>{{item.title}}</td>
+				<td>{{item.phone}}</td>
+				<td>{{item.package}}</td>
+				<td>{{item.creation_date}}</td>
+				<td>{{item.email}}</td>
+				<td> 
+					<button align="center" ng-click="setCurrentItem(companies.indexOf(item))" data-toggle="modal" data-target="#viewRealizationModal" class="btn btn-sm btn-primary"> 
+						{{item.realizations.length }}
+
+					</button>
+				</td>
+				<td>{{item.address}}</td>
+				<td> 
+					<button ng-click="item.active = !item.active" ng-show="item.active == '1'" class="btn btn-sm btn-success"> <span class="glyphicon glyphicon-off"> </span></button>
+					<button ng-click="item.active = !item.active" ng-show="item.active == '0'" class="btn btn-sm btn-danger"> <span class="glyphicon glyphicon-off"> </span></button>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+</div>
+<!-- START modals -->
+<div class="modal fade" id="addNewCompanyModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">{{translations.modals_headers.add_new_company}}</h4>
+			</div>
+			<div  class="modal-body">
+				<div class="form-group col-md-6">
+					<label>  {{translations.common.company_name}} </label>
+					<input ng-model="newCompany.title" name="companyName" type="text" class="form-control" placeholder="Please Enter Compnay Name">
+				</div>
+				<div class="form-group col-md-6">
+					<label> {{translations.common.package}}  </label>
+					<select ng-init="newCompany.package = 'bronze'" ng-model="newCompany.package" class="form-control">
+						<option value="BRONZE"> Bronze </option>
+						<option value="SILVER"> Silver </option>
+						<option value="GOLD"> Gold </option>
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label>  {{translations.common.email}} </label>
+					<input ng-model="newCompany.email" name="companyEmail" type="text" class="form-control" placeholder="Please Enter Compnay Email">
+				</div>
+				<div class="form-group col-md-6">
+					<label> {{translations.common.phone}}  </label>
+					<input ng-model="newCompany.phone" name="companyPhone" type="text" class="form-control" placeholder="Please Enter Compnay Phone">
+				</div>
+				<div class="form-group col-md-6">
+					<label>  {{translations.common.privately_held}}  </label>
+					<input ng-model="newCompany.privately_held" name="companyPrivatelyHeld" type="text" class="form-control" placeholder="Please Enter Compnay Privately Held">
+				</div>
+				<div class="form-group col-md-6">
+					<label> {{translations.common.address}}  </label>
+					<input ng-model="newCompany.address" name="companyAdress" type="text" class="form-control" placeholder="Please Enter Compnay Address">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{translations.common.close}}</button>
+				<button ng-click="saveNewCompnay(newCompany)" type="button" class="btn btn-primary" data-dismiss="modal">{{translations.common.save_changes}}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div>
+</div>
+
+<div class="modal fade" id="viewRealizationModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 align="center" class="modal-title"> {{companies[currentIndex].title}} Realizations </h4>
+			</div>
+			<div class="modal-body">
+				<div class="realizations_list_labels">
+					<div class="form-group col-md-3">
+						<label> {{translations.common.coupon_name}} </label>
+					</div>
+
+					<div class="form-group col-md-3">
+						<label>  {{translations.common.creation_date}}  </label>
+					</div>
+					<div class="form-group col-md-2">
+						<label>  {{translations.common.value}}  </label>
+					</div>
+					<div class="form-group col-md-1">
+						<label> Used  </label>
+					</div>
+				</div>
+				<div class="realizations_list col-md-12" ng-repeat="realization in companies[currentIndex].realizations">
+					<div class="form-group col-md-3">
+
+						<div> {{ realization.title }}</div>
+					</div>
+
+					<div class="form-group col-md-3">
+
+						<div> {{ realization.creation_date }}</div>
+					</div>
+					<div class="form-group col-md-2">
+
+						<div> {{ realization.value }}</div>
+					</div>
+					<div class="form-group col-md-1">
+						<div> {{ booleanTranslator(realization.used) }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialo -->
+</div>
+<!-- /.modal-dialo
+   
+<!-- END modals -->
