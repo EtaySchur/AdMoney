@@ -37,6 +37,7 @@ if(isset($_FILES['file'])){
     }               
     if(empty($errors)==true){
         if (!file_exists("static/images/".$company_id."/".$campaign_id."/".$package_id."/".$type)) {
+            var_dump("Making dir");
             mkdir("static/images/".$company_id."/".$campaign_id."/".$package_id."/".$type, 0777, true);
         }else{
 
