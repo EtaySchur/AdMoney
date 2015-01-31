@@ -197,7 +197,7 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 			return;
 		} 
 		$rootScope.upload = $upload.upload({
-			url : 'UploadController.php',
+			url : 'http://ec2-54-76-168-99.eu-west-1.compute.amazonaws.com/AdMoneyMain/Web/UploadController.php',
 			data : {
 				fname : fileName , 
 				company_name : "Castro"
