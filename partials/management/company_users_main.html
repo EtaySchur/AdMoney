@@ -5,17 +5,17 @@
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th class="col-md-2">First Name</th>
-				<th class="col-md-2">Last Name</th>
-				<th class="col-md-2">Email</th>
-				<th class="col-md-2">Provision</th>
-				<th class="col-md-2">Data Created</th>
-				<th class="col-md-2">Actions</th>
+				<th class="col-md-2">{{translations.common.first_name}}</th>
+				<th class="col-md-2">{{translations.common.last_name}}</th>
+				<th class="col-md-2">{{translations.common.email}}</th>
+				<th class="col-md-2">{{translations.common.provision}}</th>
+				<th class="col-md-2">{{translations.common.creation_date}}</th>
+				<th class="col-md-2"></th>
 			</tr>
 		</thead>
 		
 		<tbody class="table-striped">
-			<tr ng-repeat="item in companyUsers">
+			<tr ng-repeat="item in companyUsers | filter:query">
 				
 				<td>{{item.first_name}}</td>
 				<td>{{item.last_name}}</td>

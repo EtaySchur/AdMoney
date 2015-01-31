@@ -73,7 +73,54 @@ managementApp.config(function($popoverProvider) {
     angular.extend($popoverProvider.defaults, {
         html: true
     });
-})
+});
+
+managementApp.filter('isPackage', function() {
+
+    return function(input, packageType) {
+        console.log("PACKAGE FILTER");
+        console.log(input);
+        if(packageType == "ALL"){
+            return input;
+        }else{
+            var out = [];
+            for (var i = 0; i < input.length; i++){
+
+                for(var j = 0 ; j < input[i].packages.length ; j++){
+                    if(input[i].packages[j].type_id == packageType)
+                        out.push(input[i]);
+                }
+
+
+            }
+            return out;
+        }
+
+    };
+});
+
+managementApp.filter('dateRangeFilter', function() {
+    return function(input, datesFilter) {
+        console.log("DATE RANGING FILTER");
+        if(input == undefined | datesFilter == "NONE"){
+            return;
+        }else{
+            console.log("NIT UNDEFINED");
+            var out = [];
+            for (var i = 0; i < input.length; i++){
+                var endDate = moment(new Date(datesFilter.endDate._d)).utc().format("YYYY-MM-DD HH:mm");
+                var startDate = moment(new Date(datesFilter.startDate._d)).utc().format("YYYY-MM-DD HH:mm");
+                var creationDate = moment(new Date(input[i].creation_date)).utc().format("YYYY-MM-DD HH:mm");
+                if(startDate < creationDate && endDate > creationDate ){
+                    console.log("PAGA!!!!");
+                    out.push(input[i]);
+                }
+            }
+            return out;
+        }
+
+    };
+});
 
 
 managementApp.config(['$routeProvider', function($routeProvider){

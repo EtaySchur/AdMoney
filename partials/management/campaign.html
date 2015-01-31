@@ -6,20 +6,20 @@
 </div>
 <div class="page_filters col-md-2">
 	<h2> {{translations.common.filters}}</h2>
-	<div class="form-group">
+	<!--div class="form-group">
 		<label> {{translations.common.status}}  </label>
 		<select  ng-model="filters.status" class="form-control">
 			<option value="ALL"> {{translations.common.all}} </option>
 			<option value="ACTIVE"> {{translations.common.active}} </option>
 		</select>
-	</div>
+	</div-->
 	<div class="form-group">
 		<label> {{translations.common.package}}  </label>
 		<select  ng-model="filters.packageType" class="form-control">
 			<option value="ALL"> {{translations.common.all}} </option>
-			<option value="GOLD"> {{translations.common.gold}} </option>
-			<option value="SILVER"> {{translations.common.silver}} </option>
-			<option value="BRONZE"> {{translations.common.bronze}} </option>
+			<option value="3"> {{translations.common.gold}} </option>
+			<option value="2"> {{translations.common.silver}} </option>
+			<option value="1"> {{translations.common.bronze}} </option>
 		</select>
 	</div>
 
@@ -51,12 +51,12 @@
 		</thead>
 
 		<tbody class="table-striped">
-			<tr ng-repeat="item in companyCampaigns | filter:query">
+			<tr ng-repeat="item in companyCampaigns | filter:query | isPackage:filters.packageType | dateRangeFilter:filters.datesFilter | orderBy:filters.sortType:direction">
 
 				<td>{{item.campaign_title}}</td>
 				<td>{{item.creation_date}}</td>
                 <td>
-                    <div  class="col-md-4" ng-repeat="package in item.packages">
+                    <div  style="text-align: center" class="col-md-4" ng-repeat="package in item.packages">
                         <a href="#edit_campaign/campaign/{{item.id}}/package/{{package.id}}">
                             <button  type="button"  class="btn btn-lg btn-primary">
                                 <img class="img img-circle package_icon" src="static/images/System_Admin/Packages/{{package.image_name}}">
@@ -103,7 +103,7 @@
                         </div>
                         <div class="form-group">
                             <label>  {{translations.common.spend_limit}} </label>
-                            <input ng-model="item.spend_limit" name="title" type="text" class="form-control" placeholder="Please Enter User First Name">
+                            <input ng-model="item.spend_limit" name="title" type="text" class="form-control" placeholder="תקציב החבילה">
                         </div>
 
                     </div>

@@ -89,8 +89,43 @@
 						</div>
 						<button ng-click="refreshRotation()" type="button" class="btn btn-default">Refresh</button>
 					</form>
+                    <div class="calenders">
+
+                        <div class="calender col-md-2">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="input-group">
+                                            <input  ranges="ranges"
+                                                    ng-click="showDates()"
+                                                    class="calender form-control"
+                                                    type="daterange"
+                                                    ng-model="dates1">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--div class="row">
+                                    <div class="col-md-6">
+                                        <label>Format:</label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
+                                    </div>
+                                </div-->
+
+
+                                <!--
+                                <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+                                <button type="button" class="btn btn-sm btn-default" ng-click="dt = '2009-08-24'">2009-08-24</button>
+                                <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+                                <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" tooltip="After today restriction">Min date</button>
+                                -->
+                            </div>
+                        </div>
+                    </div>
 					<ul class="nav navbar-nav navbar-right col-md-3">
-						<li> <a> Wellcome {{currentUser.first_name}} </a></li>
+						<li> <a> שלום ,  {{currentUser.first_name}} </a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluqid -->

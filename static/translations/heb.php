@@ -64,7 +64,7 @@
             $common_text['packages'] = 'חבילות';
             $common_text['package_limit'] = 'תקציב החבילה';
             $common_text['campaign_title'] = 'שם הקמפיין';
-            //$common_text['first_name'] = '';
+            $common_text['provision'] = 'הרשאה';
             //$common_text['first_name'] = '';
             //$common_text['first_name'] = '';
 			
