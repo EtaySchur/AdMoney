@@ -51,7 +51,7 @@
 		</thead>
 
 		<tbody class="table-striped">
-			<tr ng-repeat="item in companyCampaigns">
+			<tr ng-repeat="item in companyCampaigns | filter:query">
 
 				<td>{{item.campaign_title}}</td>
 				<td>{{item.creation_date}}</td>
@@ -62,9 +62,8 @@
                                 <img class="img img-circle package_icon" src="static/images/System_Admin/Packages/{{package.image_name}}">
                             </button>
                         </a>
-                        <h4> {{package.current_spent}} / {{package.spend_limit}}</h4>
-
-
+                        <h4>{{package.current_spent}} / {{package.spend_limit}} </h4>
+                        <progress ng-class="{'active': bet.active }" class="progress-striped"><bar  value="package.spent_percent" type="primary"><span></span></bar></progress>
                     </div>
                </td>
 				<!--td> <button ng-disabled="item.provision == 4" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td-->

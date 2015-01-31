@@ -85,7 +85,7 @@
 					</ul>
 					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="חיפוש">
+							<input type="text" ng-model="query" class="form-control" placeholder="חיפוש">
 						</div>
 						<button ng-click="refreshRotation()" type="button" class="btn btn-default">Refresh</button>
 					</form>

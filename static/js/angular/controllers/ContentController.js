@@ -7,7 +7,25 @@
 var contentController = angular.module('contentController' , []);
 
 contentController.controller('ContentController', ['$rootScope' , '$scope' , '$http' , '$upload' , function($rootScope , $scope , $http , $upload){
-	$scope.packageImagesSize = [];
+
+    $scope.stacked = [];
+    $scope.stacked.push({
+        value: 50,
+        type: 'success'
+    });
+
+    $scope.stacked.push({
+        value: 50,
+        type: 'danger'
+    });
+    $scope.timerbar = [];
+    $scope.timerbar.push({
+        value: 0,
+        type: 'primary'
+    });
+
+
+    $scope.packageImagesSize = [];
     $scope.templateUrl = 'templates/bronze_package.html';
     $scope.packageImagesSize['Bronze'] = "<div>9X5</div> <div> 14X5 </div>";
     $scope.myPopover = { title : 'Sizes' , content:"avi nimni" };
@@ -21,6 +39,7 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
             $scope.campaign_types = result;
             $scope.campaign_types.forEach(function (campaignType){
                 $scope.popovers[campaignType.title] = { title : 'Sizes' , content:campaignType.images_sizes};
+
             });
 
             console.log("POP OVERS");
@@ -51,6 +70,13 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
             if(success){
                 console.log(companyCampaigns);
                 $scope.companyCampaigns = companyCampaigns;
+                $scope.companyCampaigns.forEach(function(campagin){
+                   campagin.packages.forEach(function(myPackage){
+                      myPackage.spent_percent = (myPackage.current_spent / myPackage.spend_limit) * 100;
+                   });
+                });
+
+
                 console.log("COMPANY CAMPAIGNS");
                 console.log($scope.companyCampaigns);
                 $rootScope.companyCampaigns = companyCampaigns;
