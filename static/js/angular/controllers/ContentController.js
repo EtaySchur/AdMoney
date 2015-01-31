@@ -334,7 +334,7 @@ console.log($rootScope.companyCampaigns);
             var oldResourceInstance = oldResource;
         }
         $scope.upload = $upload.upload({
-            url : 'http://ec2-54-76-168-99.eu-west-1.compute.amazonaws.com/AdMoneyMain/Web/UploadController.php',
+            url : 'UploadController.php',
             data : {
                 fname : $scope.newCampaignMainImageFile.file.name+'_'+$scope.newCampaignMainImageFile.width+'_'+$scope.newCampaignMainImageFile.height ,
                 company_id : $rootScope.currentUser.company_id,
