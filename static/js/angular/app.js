@@ -50,7 +50,7 @@ systemAdminApp.config(['$routeProvider', function($routeProvider){
             controller:'ManageCampaignsController'
         }).
         otherwise({
-            redirectTo:'/admin'
+            redirectTo:'/companies'
         });
 }]);
 
