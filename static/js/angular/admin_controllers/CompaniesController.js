@@ -14,7 +14,7 @@ companiesController.controller('CompaniesController', ['$rootScope' , '$scope' ,
 		for(var i = 0 ; i < data.length ; i++){
 			data[i].creation_date = new Date(data[i].creation_date).toDateString("yyyy-MM-dd");
 		}
-		
+		console.log("This is the Companies");
 		$scope.companies = data;
 		$scope.$emit('UNLOAD');	
 		console.log($scope.companies);
@@ -33,6 +33,10 @@ companiesController.controller('CompaniesController', ['$rootScope' , '$scope' ,
 			if(success){
 				alertMe('success' , "Save New Company Success");
 				newCompany.id = result;
+                newCompany.active = true;
+                newCompany.realizations = [];
+                newCompany.creation_date = new Date().toDateString("yyyy-MM-dd");
+                console.log(newCompany);
 				$scope.companies.push(newCompany);
 			}else{
 				alertMe('danger' , "Save New Company Fail");

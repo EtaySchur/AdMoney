@@ -20,7 +20,7 @@
                 <div class="btn-group" role="group" aria-label="...">
                     <button ng-click="fakeInputClick($index)" class="btn btn-primary btn-lg new_Btn">
                         <span class="glyphicon glyphicon-upload"> {{imageSize.width}} X  {{imageSize.height}} </span>
-                        <input id="html_btn_{{$index}}" style="display : none" type="file" class="form-control" ng-file-select="onCampaignMainImageSelect($files , imageSize.width , imageSize.height , imageSize.type)">
+                        <input id="html_btn_{{$index}}" style="display : none" type="file" class="form-control" ng-file-select="onCampaignMainImageSelect($files , imageSize.width , imageSize.height , imageSize.type , selectedPackage.resources[imageSize.type])">
                     </button>
                     <!--button  ng-if="selectedPackage.resources[imageSize.type].id > 0" data-placement="right"  class="btn btn-lg btn-danger"
                              data-content='<img class="img img-circle resourceImage" src="static/images/{{selectedCampaign.company_id}}/{{selectedCampaign.id}}/{{selectedPackage.id}}/{{imageSize.type}}/{{selectedPackage.resources[imageSize.type].title}}">' data-template="partials/management/templates/popover_resource.html"
@@ -30,6 +30,7 @@
                     <button  data-content='<img class="img img-circle resourceImage" src="static/images/{{selectedCampaign.company_id}}/{{selectedCampaign.id}}/{{selectedPackage.id}}/{{imageSize.type}}/{{selectedPackage.resources[imageSize.type].title}}">' ng-if="selectedPackage.resources[imageSize.type].id > 0" type="button" class="btn btn-lg btn-default" data-placement="top" trigger="click" data-animation="am-flip-x" bs-popover="testPopover">
                         <span class="glyphicon glyphicon-eye-open"> </span>
                     </button>
+
                 </div>
 
                 <!--img class="img img-circle" src="static/images/{{selectedCampaign.company_id}}/{{selectedCampaign.id}}/{{selectedPackage.id}}/{{imageSize.type}}/{{selectedPackage.resources[imageSize.type].title}}"-->

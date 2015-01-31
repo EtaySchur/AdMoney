@@ -191,9 +191,14 @@ table.col-md-16  {
 }
 
 .resourceImage{
+    width:100%;
     max-height: 15vh;
 }
 
 .size_element_section .popover-content{
     text-align: center;
+}
+
+.navbar-brand{
+    margin-left: 18px !important;
 }

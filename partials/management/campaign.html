@@ -45,8 +45,8 @@
 
 				<th class="col-md-2">{{translations.common.title}}</th>
 				<th class="col-md-2">{{translations.common.creation_date}}</th>
-                <th class="col-md-6">{{translations.common.packages}}</th>
-				<th class="col-md-2">{{translations.common.actions}}</th>
+                <th class="col-md-8">{{translations.common.packages}}</th>
+				<!--th class="col-md-2">{{translations.common.actions}}</th-->
 			</tr>
 		</thead>
 
@@ -56,18 +56,18 @@
 				<td>{{item.campaign_title}}</td>
 				<td>{{item.creation_date}}</td>
                 <td>
-                    <div  class="col-md-3" ng-repeat="package in item.packages">
-
+                    <div  class="col-md-4" ng-repeat="package in item.packages">
                         <a href="#edit_campaign/campaign/{{item.id}}/package/{{package.id}}">
                             <button  type="button"  class="btn btn-lg btn-primary">
                                 <img class="img img-circle package_icon" src="static/images/System_Admin/Packages/{{package.image_name}}">
                             </button>
                         </a>
+                        <h4> {{package.current_spent}} / {{package.spend_limit}}</h4>
 
 
                     </div>
                </td>
-				<td> <button ng-disabled="item.provision == 4" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td>
+				<!--td> <button ng-disabled="item.provision == 4" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"> </span></button></td-->
 			</tr>
 
 		</tbody>
@@ -84,7 +84,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">Add Admin User</h4>
+				<h4 class="modal-title">קמפיין חדש</h4>
 			</div>
 			<div class="modal-body col-md-12">
 				<div class="form-group">

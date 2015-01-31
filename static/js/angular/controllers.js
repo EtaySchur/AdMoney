@@ -57,7 +57,7 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 	$rootScope.filters.sortType = 'creation_date';
 	
 	$scope.dates1 = {
-		startDate: moment().subtract(60, 'day'), 
+		startDate: moment().subtract(365, 'day'),
 		endDate: moment()
 	};
 	$scope.ranges = {
@@ -141,6 +141,13 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 		}
 	});
 
+    $scope.refreshRotation = function() {
+        restCallManager.post(refreshRotationCallback, $http, null, "refreshRotation");
+        function refreshRotationCallback(result, status, success) {
+                    console.log("Refreshed..");
+        }
+    }
+
 
 
 
@@ -203,6 +210,27 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 	};
 	
 	$rootScope.verifyUser = function (user){
+        if(user === 'Renuar'){
+            console.log("Renuar !!");
+            var user = {};
+            user.email = 'etayschur@gmail.com';
+            user.password = 'Fuad';
+        }
+        if(user === 'SuperPharm'){
+
+            var user = {};
+            user.email = 'sophie@gmail.com';
+            user.password = 'SOPHIE';
+        }
+        if(user === 'Demo'){
+
+            var user = {};
+            user.email = 'testDemo@gmail.com';
+            user.password = 'DEMO';
+        }
+
+        console.log(user);
+
 		restCallManager.post(verifyUserCallback, $http, user , "verifyUser");
 		function verifyUserCallback (result , status , success){
 			if(success){

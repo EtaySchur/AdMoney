@@ -80,40 +80,18 @@
 
 					</form>
 					<div class="calenders">
-						<div class="calender col-md-2">
-							<div>
-								<div class="row">
-									<div class="col-md-12">
-										<p class="input-group">
-											<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt_start" is-open="opened_start" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptionsStart"  ng-required="true" close-text="Close" />
-											<span class="input-group-btn">
-												<button type="button" class="btn btn-default" ng-click="open_start($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-											</span>
-										</p>
-									</div>
-								</div>
-								<!--div class="row">
-									<div class="col-md-6">
-										<label>Format:</label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
-									</div>
-								</div-->
 
-
-								<!--
-								<button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
-								<button type="button" class="btn btn-sm btn-default" ng-click="dt = '2009-08-24'">2009-08-24</button>
-								<button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
-								<button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" tooltip="After today restriction">Min date</button>
-								-->
-							</div>
-						</div>
 						<div class="calender col-md-2">
 							<div>
 								<div class="row">
 									<div class="col-md-12">
 
 										<div class="input-group">
-											<input  ranges="ranges" ng-click="showDates()" class="calender form-control" type="daterange" ng-model="dates1">
+											<input  ranges="ranges"
+                                                    ng-click="showDates()"
+                                                    class="calender form-control"
+                                                    type="daterange"
+                                                    ng-model="dates1">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										</div>
 

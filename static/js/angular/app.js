@@ -190,7 +190,7 @@ systemAdminApp.filter('isPackage', function() {
 systemAdminApp.filter('dateRangeFilter', function() {
 	return function(input, datesFilter) {
 		console.log("DATE RANGING FILTER");
-		if(input == undefined){
+		if(input == undefined | datesFilter == "NONE"){
 			return;
 		}else{
 			console.log("NIT UNDEFINED");

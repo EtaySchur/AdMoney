@@ -11,7 +11,7 @@
 			<option value="ACTIVE"> {{translations.common.active}} </option>
 		</select>
 	</div>
-	<div class="form-group">
+	<!--div class="form-group">
 		<label> {{translations.common.package}}  </label>
 		<select  ng-model="filters.packageType" class="form-control">
 			<option value="ALL"> {{translations.common.all}} </option>
@@ -19,7 +19,7 @@
 			<option value="SILVER"> {{translations.common.silver}} </option>
 			<option value="BRONZE"> {{translations.common.bronze}} </option>
 		</select>
-	</div>
+	</div-->
 
 	<div class="form-group">
 		<label> {{translations.common.member_since}}  </label>
@@ -42,7 +42,7 @@
 			<tr>
 				<th class="col-md-2">{{translations.common.company_name}}</th>
 				<th class="col-md-1">{{translations.common.phone}}</th>
-				<th class="col-md-1">{{translations.common.package}}</th>
+				<!--th class="col-md-1">{{translations.common.package}}</th-->
 				<th class="col-md-2">{{translations.common.creation_date}}</th>
 				<th class="col-md-1">{{translations.common.email}}</th>
 				<th class="col-md-1">{{translations.common.realizations}}</th>
@@ -56,7 +56,7 @@
 
 				<td>{{item.title}}</td>
 				<td>{{item.phone}}</td>
-				<td>{{item.package}}</td>
+				<!--td>{{item.package}}</td-->
 				<td>{{item.creation_date}}</td>
 				<td>{{item.email}}</td>
 				<td> 
@@ -88,14 +88,14 @@
 					<label>  {{translations.common.company_name}} </label>
 					<input ng-model="newCompany.title" name="companyName" type="text" class="form-control" placeholder="Please Enter Compnay Name">
 				</div>
-				<div class="form-group col-md-6">
+				<!--div class="form-group col-md-6">
 					<label> {{translations.common.package}}  </label>
 					<select ng-init="newCompany.package = 'bronze'" ng-model="newCompany.package" class="form-control">
 						<option value="BRONZE"> Bronze </option>
 						<option value="SILVER"> Silver </option>
 						<option value="GOLD"> Gold </option>
 					</select>
-				</div>
+				</div-->
 				<div class="form-group col-md-6">
 					<label>  {{translations.common.email}} </label>
 					<input ng-model="newCompany.email" name="companyEmail" type="text" class="form-control" placeholder="Please Enter Compnay Email">
@@ -108,7 +108,7 @@
 					<label>  {{translations.common.privately_held}}  </label>
 					<input ng-model="newCompany.privately_held" name="companyPrivatelyHeld" type="text" class="form-control" placeholder="Please Enter Compnay Privately Held">
 				</div>
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-12">
 					<label> {{translations.common.address}}  </label>
 					<input ng-model="newCompany.address" name="companyAdress" type="text" class="form-control" placeholder="Please Enter Compnay Address">
 				</div>

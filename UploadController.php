@@ -14,7 +14,10 @@ $campaign_id = $_POST["campaign_id"];
 $width = $_POST["width"];
 $height = $_POST["height"];
 $type = $_POST["type"];
+$resource = $_POST["resource"];
+$action = $_POST["action"];
 
+// TODO - DELETE EXISTS IMAGES
 
 
 if(isset($_FILES['file'])){
@@ -35,6 +38,8 @@ if(isset($_FILES['file'])){
     if(empty($errors)==true){
         if (!file_exists("static/images/".$company_id."/".$campaign_id."/".$package_id."/".$type)) {
             mkdir("static/images/".$company_id."/".$campaign_id."/".$package_id."/".$type, 0777, true);
+        }else{
+
         }
         move_uploaded_file($file_tmp,"static/images/".$company_id."/".$campaign_id."/".$package_id."/".$type."/".$file_name);
         echo $fname . " uploaded file: " . "static/images/".$company_id."/".$file_name;

@@ -2,6 +2,17 @@
 
 class DbManager {
 
+    const BRONZE_ID = 1;
+    const SILVER_ID = 2;
+    const GOLD_ID = 3;
+    const VIDEO_ID = 4;
+
+    const BRONZE = "BRONZE";
+    const SILVER = "SILVER";
+    const GOLD = "GOLD";
+    const VIDEO = "VIDEO";
+
+
 	protected $pdo;
 
 	public function __construct() {
@@ -101,6 +112,10 @@ class DbManager {
 		exit;
 	}
 
+    public static function refreshRotation(){
+        self::deleteFromDb("campaign_rotation" , null , null);
+    }
+
 	public static function getCompanyCampaigns($company_id) {
 		$conn = self::connectToDb();
 		$sql = $conn->prepare("SELECT * from `campaigns` WHERE company_id = :company_id");
@@ -117,8 +132,10 @@ class DbManager {
             $campaign['packages'] = $sql->fetchAll(PDO::FETCH_ASSOC);
             foreach($campaign['packages'] as &$package){
                 $sql = $conn->prepare("SELECT * from `resources`
-                                      WHERE package_id = :package_id");
+                                      WHERE package_id = :package_id
+                                      AND company_id =:companyId");
                 $sql->bindParam('package_id', $package['id']);
+                $sql->bindParam('companyId', $company_id);
                 $sql->execute();
                 $resources = $sql->fetchAll(PDO::FETCH_ASSOC);
                 foreach($resources as $resource){
@@ -222,15 +239,7 @@ class DbManager {
 		exit;
 	}
 
-	public static function getUserDetails($user_id) {
-		$conn = self::connectToDb();
-		$sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
-		$sql->bindParam('userId', $user_id);
-		$sql->execute();
-		$result = $sql->fetch(PDO::FETCH_ASSOC);
-		return $result;
-		exit;
-	}
+
 
 	public static function getUsersCategories($user_id) {
 		$conn = self::connectToDb();
@@ -277,6 +286,25 @@ class DbManager {
         $resource_id = self::insertToDb("resources", $newResource);
         return $resource_id;
     }
+
+    public static function editResource($resources){
+           $old_resource_id = $resources->oldResource->id;
+           $result = self::deleteFromDb("resources" , "id" , $old_resource_id);
+           self::saveNewResource($resources->newResource);
+           // TODO - Check Validation
+           return json_encode(array("success" => "success")); exit;
+
+    }
+
+    public static function deleteResourceFromDb($old_resource_id , $campaign_id , $package_id){
+
+    }
+
+
+
+
+
+
 	
 	public static function saveNewCampaign($newCampaign){
 		$campaignRow = array();
@@ -288,15 +316,15 @@ class DbManager {
         if($campaignRow['campaign_id'] > 0 ){
             foreach($newCampaign->packages as &$package){
                 if($package != null){
-
                     $newPackage = array();
                     $newPackage['spend_limit'] = $package->spend_limit;
                     $newPackage['type_id'] = $package->id;
                     $newPackage['campaign_id'] = $campaignRow['campaign_id'];
-                    $package['package_id'] = self::insertToDb("campaign_packages", $newPackage);
+                    $result = self::insertToDb("campaign_packages", $newPackage);
                 }
 
             }
+
             return $campaignRow;
         }else{
             return false;
@@ -340,6 +368,235 @@ class DbManager {
 		
 	}
 
+    /* Extension Section */
+
+    public static function getUserDetails($user_id) {
+        $isBronzeFound = false;
+        $isSilverFound = false;
+        $isGoldFound = false;
+        $isVideoFound = false;
+        /* Getting User General Data */
+        $conn = self::connectToDb();
+        $sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
+        $sql->bindParam('userId', $user_id);
+        $sql->execute();
+        $user = $sql->fetch(PDO::FETCH_ASSOC);
+
+        /* Getting User Categories */
+        $sql = $conn->prepare("SELECT * from app_users2categories
+                               LEFT JOIN categories
+                               ON categories.id = app_users2categories.category_id
+                               WHERE app_users2categories.app_user_id =:userId");
+        $sql->bindParam('userId', $user_id);
+        $sql->execute();
+        $user['categories'] = $sql->fetchAll(PDO::FETCH_ASSOC);
+        foreach($user['categories'] as &$category){
+            $sql = $conn->prepare("SELECT * from companies
+                                   LEFT JOIN campaigns
+                                   ON campaigns.company_id = companies.id
+                                   WHERE companies.category_id =:categoryId");
+            $sql->bindParam('categoryId', $category['id']);
+            $sql->execute();
+            $category['campaigns'] = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $campaign['resources'] = array();
+            foreach($category['campaigns'] as &$campaign){
+                $sql = $conn->prepare("SELECT * from campaign_packages
+                                   LEFT JOIN campaigns_type
+                                   ON campaign_packages.type_id = campaigns_type.id
+                                   WHERE campaign_packages.campaign_id =:campaignId");
+                $sql->bindParam('campaignId', $campaign['id']);
+                $sql->execute();
+                $campaign['info']  = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+                $sql = $conn->prepare("SELECT * from resources
+                                       WHERE campaign_id =:campaignId
+                                       AND
+                                       package_id =:packageId
+                                       AND  NOT EXISTS
+                                        (
+                                            SELECT  *
+                                            FROM    campaign_rotation
+                                            WHERE   campaign_rotation.user_id =:userId
+                                            AND     campaign_rotation.package_id =:packageId
+                                            AND     campaign_rotation.campaign_id =:campaignId
+                                        )
+                                       ");
+                $packageId = self::BRONZE_ID;
+                $sql->bindParam('packageId', $packageId);
+                $sql->bindParam('campaignId', $campaign['id']);
+                $sql->bindParam('userId', $user_id);
+                $sql->execute();
+                $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+                if(count($result) > 0){
+                    $isBronzeFound = true;
+                    $campaign['resources'][self::BRONZE] = $result;
+                }
+
+
+                $sql = $conn->prepare("SELECT * from resources
+                                       WHERE campaign_id =:campaignId
+                                       AND
+                                       package_id =:packageId
+                                       AND  NOT EXISTS
+                                        (
+                                            SELECT  *
+                                            FROM    campaign_rotation
+                                            WHERE   campaign_rotation.user_id =:userId
+                                            AND     campaign_rotation.package_id =:packageId
+                                            AND     campaign_rotation.campaign_id =:campaignId
+                                        )
+                                       ");
+                $packageId = self::SILVER_ID;
+                $sql->bindParam('packageId', $packageId);
+                $sql->bindParam('campaignId', $campaign['id']);
+                $sql->bindParam('userId', $user_id);
+                $sql->execute();
+                $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+                if(count($result) > 0){
+                    $isSilverFound = true;
+                    $campaign['resources'][self::SILVER] = $result;
+                }
+
+
+                $sql = $conn->prepare("SELECT * from resources
+                                       WHERE campaign_id =:campaignId
+                                       AND
+                                       package_id =:packageId
+                                       AND  NOT EXISTS
+                                        (
+                                            SELECT  *
+                                            FROM    campaign_rotation
+                                            WHERE   campaign_rotation.user_id =:userId
+                                            AND     campaign_rotation.package_id =:packageId
+                                            AND     campaign_rotation.campaign_id =:campaignId
+                                        )
+                                       ");
+                $packageId = self::GOLD_ID;
+                $sql->bindParam('packageId', $packageId);
+                $sql->bindParam('campaignId', $campaign['id']);
+                $sql->bindParam('userId', $user_id);
+                $sql->execute();
+                $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+                if(count($result) > 0){
+                    $isGoldFound = true;
+                    $campaign['resources'][self::GOLD] = $result;
+                }
+
+
+                $sql = $conn->prepare("SELECT * from resources
+                                       WHERE campaign_id =:campaignId
+                                       AND
+                                       package_id =:packageId
+                                       AND NOT EXISTS
+                                        (
+                                            SELECT  *
+                                            FROM    campaign_rotation
+                                            WHERE   campaign_rotation.user_id =:userId
+                                            AND     campaign_rotation.package_id =:packageId
+                                            AND     campaign_rotation.campaign_id =:campaignId
+                                        )
+                                       ");
+                $packageId = self::VIDEO_ID;
+                $sql->bindParam('packageId', $packageId);
+                $sql->bindParam('campaignId', $campaign['id']);
+                $sql->bindParam('userId', $user_id);
+                $sql->execute();
+                $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+                if(count($result) > 0){
+                    $isVideoFound = true;
+                    $campaign['resources'][self::VIDEO] = $result;
+                }
+
+
+
+
+            }
+
+        }
+
+        $needToInit = false;
+       // TODO REMOVE EMPTY CAMPAIGNS !
+        if(!$isBronzeFound){
+            self::deleteUserPackageRotation($user_id , self::BRONZE_ID);
+            $needToInit = true;
+        }
+        if(!$isSilverFound){
+            self::deleteUserPackageRotation($user_id , self::SILVER_ID);
+            $needToInit = true;
+        }
+        if(!$isGoldFound){
+            self::deleteUserPackageRotation($user_id , self::GOLD_ID);
+            $needToInit = true;
+        }
+        // TODO
+        /*
+        if(!$isVideoFound){
+            self::deleteUserPackageRotation($user_id , self::VIDEO_ID);
+            $needToInit = true;
+        }
+        */
+
+
+        if($needToInit){
+            self::getUserDetails($user_id);
+        }else{
+            return $user;
+            exit;
+        }
+
+
+
+    }
+
+    public static function bannerClick($data){
+
+        $conn = self::connectToDb();
+        $campaign_id = $data['campaign_id'];
+        $package_id = $data['package_id'];
+
+
+
+        $sql = $conn->prepare("SELECT * from `campaigns_type` WHERE id=:packageId");
+        $sql->bindParam('packageId', $package_id);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        $clickValue = $result['click_value'];
+
+        $sql = "UPDATE `campaign_packages` SET current_spent = current_spent + $clickValue WHERE campaign_id=$campaign_id AND type_id=$package_id";
+        $stmt = $conn->query($sql);
+        //$stmt->execute();
+        //$result = $stmt->fetch();
+        var_dump($result); exit;
+        return $result; exit;
+
+    }
+
+    private static function deleteUserPackageRotation($userId , $packageId){
+        var_dump("Delete ".$packageId." PAckage");
+        $conn = self::connectToDb();
+        $sql = "DELETE FROM campaign_rotation WHERE package_id =".$packageId." AND user_id=".$userId;
+        $q = $conn->query($sql);
+        var_dump($q);
+        return $q;
+    }
+
+    public static function updateCampaignRotation($data){
+
+        $dataArray = array();
+        $dataArray['user_id'] = $data['user_id'];
+        $dataArray['campaign_id'] = $data['campaign_id'];
+        $dataArray['package_id'] = $data['package_id'];
+        return self::insertToDb('campaign_rotation' , $dataArray);
+        exit;
+    }
+
+
+
+
+    /* END of Extension Section */
+
+    /* Generic Section */
+
 	public static function insertToDb($tableName, $data) {
 		// Convert The Data from Object to Key - Value Array
 		$dataArray = (array) $data;
@@ -367,6 +624,23 @@ class DbManager {
 		$q->execute($dataArray);
 		return array('id' => $conn->lastInsertId(), 'creation_date' => date("Y-m-d H:i:s", time()));
 	}
+
+    private static function deleteFromDb($table , $whereCol , $whereVal){
+        $conn = self::connectToDb();
+        if($whereCol == null){
+            $sql = "DELETE FROM ".$table;
+            $q = $conn->query($sql);
+            return $q;
+        }else{
+            $sql = "DELETE FROM ".$table." WHERE ".$whereCol."=".$whereVal;
+            $q = $conn->query($sql);
+            return $q;
+        }
+
+
+    }
+
+    /* End Of Generic Section */
 
 }
 

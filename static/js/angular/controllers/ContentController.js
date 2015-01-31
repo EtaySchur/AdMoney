@@ -13,17 +13,37 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
     $scope.myPopover = { title : 'Sizes' , content:"avi nimni" };
 
     $scope.popovers = [];
+    /* Getting All Packages */
+    // TODO Make it in Root Scope
+    restCallManager.post(getCampaignTypesCallback , $http, null , "getCampaignTypes");
+    function getCampaignTypesCallback(result , status , success) {
+        if (success) {
+            $scope.campaign_types = result;
+            $scope.campaign_types.forEach(function (campaignType){
+                $scope.popovers[campaignType.title] = { title : 'Sizes' , content:campaignType.images_sizes};
+            });
+
+            console.log("POP OVERS");
+            console.log($scope.popovers);
+        } else {
+            console.log("Error Getting Campaign Type " + status);
+        }
+    }
 
     $scope.popover = {title: 'Title', content: 'Hello Popover<br />This is a multiline message!'};
 	$rootScope.$watch('currentUser', function() {
 		if($rootScope.currentUser != undefined){
-                $scope.getCompanyCampaigns();
+                if($rootScope.companyCampaigns.length == 0 ){
+                    $scope.getCompanyCampaigns();
+                }
+
 
 		}
 		
 	});
 
     $scope.getCompanyCampaigns = function(){
+        $scope.$emit('LOAD');
         $scope.newCampaign = [];
         /* Getting Company's Campaigns */
         restCallManager.post(getCompanyCampaignsCallback , $http, $rootScope.currentUser.company_id , "getCompanyCampaigns");
@@ -31,28 +51,17 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
             if(success){
                 console.log(companyCampaigns);
                 $scope.companyCampaigns = companyCampaigns;
+                console.log("COMPANY CAMPAIGNS");
                 console.log($scope.companyCampaigns);
                 $rootScope.companyCampaigns = companyCampaigns;
+                $scope.$emit('UNLOAD');
 
             }else{
                 // TODO
             }
         }
 
-        /* Getting All Packages */
-        restCallManager.post(getCampaignTypesCallback , $http, null , "getCampaignTypes");
-        function getCampaignTypesCallback(result , status , success) {
-            if (success) {
-                $scope.campaign_types = result;
-                $scope.campaign_types.forEach(function (campaignType){
-                    $scope.popovers[campaignType.title] = { title : 'Sizes' , content:campaignType.images_sizes};
-                });
-                console.log("POP OVERS");
-                console.log($scope.popovers);
-            } else {
-                console.log("Error Getting Campaign Type " + status);
-            }
-        }
+
     };
 
     $scope.setCurrentTab = function(currentTab){
@@ -106,6 +115,9 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
 	};
 	
 	$scope.saveNewCampaigns = function(newCampaign){
+        console.log($scope.campaign_types);
+        console.log("Select Campagin Display");
+        console.log(newCampaign);
         var newDbCampaign = {};
         newDbCampaign.campaign_title = newCampaign.campaign_title;
         newDbCampaign.company_id = $rootScope.currentUser.company_id;
@@ -117,6 +129,7 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
 
            }
         });
+
         console.log(newDbCampaign);
         saveCamptainToDb(newDbCampaign);
         return;
@@ -151,7 +164,6 @@ contentController.controller('ContentController', ['$rootScope' , '$scope' , '$h
             restCallManager.post(saveNewCampaignCallback , $http, saveMe , "saveNewCampaign");
             function saveNewCampaignCallback(result , status , success){
                 if(success){
-
                     $scope.getCompanyCampaigns();
                     alertMe('success' , 'New Campaign Saved Success');
 
@@ -202,6 +214,7 @@ console.log($rootScope.companyCampaigns);
         var campaignId = $routeParams.campaignId;
         var packageId = $routeParams.packageId;
         if($rootScope.companyCampaigns.length == 0 || init == true){
+            console.log("INIT Packages");
             restCallManager.post(getCompanyCampaignsCallback , $http, $rootScope.currentUser.company_id , "getCompanyCampaigns");
             function getCompanyCampaignsCallback (companyCampaigns , status , success){
                 if(success){
@@ -209,11 +222,14 @@ console.log($rootScope.companyCampaigns);
                     $rootScope.companyCampaigns = companyCampaigns;
                     $rootScope.companyCampaigns.forEach(function (campaign){
                         if(campaign.id == campaignId){
+                            console.log(campaign);
                             console.log("NIDBAK");
                             $scope.selectedCampaign = campaign;
                             $scope.selectedCampaign.packages.forEach(function (campaignPackage){
                                 if(campaignPackage.id == packageId){
                                     $scope.selectedPackage = campaignPackage;
+                                    console.log("This is selected Package");
+                                    console.log($scope.selectedPackage);
                                 }
                             });
                         }
@@ -253,7 +269,16 @@ console.log($rootScope.companyCampaigns);
 
     }
 
-    $scope.onCampaignMainImageSelect = function ($files , width , height , type){
+    $scope.onCampaignMainImageSelect = function ($files , width , height , type , oldResource){
+        var isNewResource;
+
+        if(oldResource == undefined){
+            isNewResource = true;
+        }else{
+            isNewResource = false;
+        }
+
+
         console.log($files[0]);
         console.log("ON IMAGE SELECT");
         var file = $files[0];
@@ -275,7 +300,13 @@ console.log($rootScope.companyCampaigns);
         $scope.newCampaignMainImageFile.file  = $files[0];
         $scope.newCampaignMainImageFile.width = width;
         $scope.newCampaignMainImageFile.height = height;
-
+        if(isNewResource){
+            var action = "UPLOAD_NEW_RESOURCE";
+            var oldResourceInstance = null;
+        }else{
+            var action = "EDIT_EXISTS_RESOURCE";
+            var oldResourceInstance = oldResource;
+        }
         $scope.upload = $upload.upload({
             url : 'UploadController.php',
             data : {
@@ -285,7 +316,9 @@ console.log($rootScope.companyCampaigns);
                 package_id : $scope.selectedPackage.id,
                 width : width,
                 height : height,
-                type : type
+                type : type,
+                action : action,
+                resource : oldResourceInstance
             },
             file : $scope.newCampaignMainImageFile.file
         }).success(function(data, status, headers, config) {
@@ -301,12 +334,26 @@ console.log($rootScope.companyCampaigns);
             newResource.type = type;
             console.log('saveing new resource');
             console.log(newResource);
-            restCallManager.post(saveNewResourceCallback , $http, newResource , "saveNewResource");
-            function saveNewResourceCallback(result , status , success){
-                $scope.getPackageResources(true);
-                console.log(result);
+            if(isNewResource){
+                restCallManager.post(saveNewResourceCallback , $http, newResource , "saveNewResource");
+                function saveNewResourceCallback(result , status , success){
+                    $scope.getPackageResources(true);
+                    console.log(result);
 
-            };
+                };
+            }else{
+                var resources = {};
+                resources.oldResource = oldResource;
+                resources.newResource = newResource;
+                restCallManager.post(editResourceCallback , $http, resources , "editResource");
+
+                function editResourceCallback(result , status , success){
+                    $scope.getPackageResources(true);
+                    console.log(result);
+
+                };
+            }
+
         });
     };
 }]);

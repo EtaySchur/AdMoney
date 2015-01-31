@@ -52,7 +52,7 @@
 	</head>
 	<body>
 
-		<nav class="navbar navbar-default" role="navigation">
+		<nav ng-show="auth == true" class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
@@ -68,8 +68,8 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li ng-class="{active : isActive('campaigns')}"><a href="#/campaigns">Campaigns</a></li>
-						<li ng-class="{active : isActive('company_users')}"><a href="#/company_users">Users</a></li>
+						<li ng-class="{active : isActive('campaigns')}"><a href="#/campaigns">קמפיינים</a></li>
+						<li ng-class="{active : isActive('company_users')}"><a href="#/company_users">משתמשים</a></li>
 						<!--li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
@@ -85,15 +85,15 @@
 					</ul>
 					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search">
+							<input type="text" class="form-control" placeholder="חיפוש">
 						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button ng-click="refreshRotation()" type="button" class="btn btn-default">Refresh</button>
 					</form>
 					<ul class="nav navbar-nav navbar-right col-md-3">
 						<li> <a> Wellcome {{currentUser.first_name}} </a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
-			</div><!-- /.container-fluid -->
+			</div><!-- /.container-fluqid -->
 		</nav>
 		<div ng-hide="auth == true" class="login col-md-4 col-md-offset-4">
 			<form name="userForm">
@@ -110,7 +110,10 @@
 					</label>
 					<input ng-init="user.password = 'fff'" value="fff" type="password" class="form-control" name="password" ng-model="user.password" required />
 				</div>
-				<button ng-click="verifyUser(user)" type="button" class="btn btn-default">Login</button>
+				<button ng-click="verifyUser(user)" type="button" class="btn btn-default">Castro Login</button>
+                <button ng-click="verifyUser('Renuar')" type="button" class="btn btn-default">Renuar Login</button>
+                <button ng-click="verifyUser('SuperPharm')" type="button" class="btn btn-default">Super Pharm  Login</button>
+                <button ng-click="verifyUser('Demo')" type="button" class="btn btn-default">Demo  Login</button>
 			</form>
 		</div>
         <span us-spinner="{radius:10, width:4, length: 16 , top : 45}" spinner-key="spinner-1"></span>

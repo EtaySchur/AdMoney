@@ -13,9 +13,8 @@ if (($_POST) || (isset($_POST))) {
 			$companies = (DbManager::getAllCompanies());
 			echo json_encode($companies);
 			exit;
-
 		case 'saveNewCompany' :
-			$reulst = DbManager::insertToDb('companies', $request->data);
+            $result = DbManager::insertToDb('companies', $request->data);
 			//$result = DbManager::insertNewCompnay($request->data->title, $request->data->phone, $request->data->package);
 			echo json_encode($result);
 			exit;
@@ -76,6 +75,16 @@ if (($_POST) || (isset($_POST))) {
             $result = DbManager::saveNewResource($request->data);
             echo json_encode($result);
             exit;
+        case 'editResource':
+            $result = DbManager::editResource($request->data);
+            echo json_encode($result);
+            exit;
+        case 'refreshRotation':
+            $result = DbManager::refreshRotation();
+            echo json_encode($result);
+            exit;
+
+
 
 	}
 }
