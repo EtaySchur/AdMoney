@@ -75,7 +75,8 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 	
 	
 	/* Calender */
-	
+
+
 	$scope.today = function() {
 		console.log("To day");
 		$scope.dt = new Date();
@@ -135,7 +136,9 @@ mainController.controller('MainController', ['$rootScope' , '$scope' ,'$location
 	/* HELPERS FUNCTIONS */
 	
 	$scope.$watch('dates1' , function(){
+        console.log($scope.dates1);
 		if($scope.dates1 != undefined){
+
 			$rootScope.filters.datesFilter = $scope.dates1;
 			
 		}

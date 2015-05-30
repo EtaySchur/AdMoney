@@ -133,7 +133,7 @@
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
-		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+        <span  us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
 		<div class="main_app_view" ng-view>
 
 		</div>
