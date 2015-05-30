@@ -142,5 +142,6 @@
 				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			</div>
 		</div>
+	<script src="http://cdn-dev.kampyle.com/websites-etay/2/onsite/embed.js"> </script>
 	</body>
 </html>
