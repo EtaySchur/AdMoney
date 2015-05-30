@@ -95,7 +95,6 @@
                             <div>
                                 <div class="row">
                                     <div class="col-md-12">
-
                                         <div class="input-group">
                                             <input  ranges="ranges"
                                                     ng-click="showDates()"
