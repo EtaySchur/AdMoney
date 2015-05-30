@@ -566,16 +566,15 @@ class DbManager {
         $stmt = $conn->query($sql);
         //$stmt->execute();
         //$result = $stmt->fetch();
-        return $result; exit;
+        return $result;
+        exit;
 
     }
 
     private static function deleteUserPackageRotation($userId , $packageId){
-        var_dump("Delete ".$packageId." PAckage");
         $conn = self::connectToDb();
         $sql = "DELETE FROM campaign_rotation WHERE package_id =".$packageId." AND user_id=".$userId;
         $q = $conn->query($sql);
-        var_dump($q);
         return $q;
     }
 
