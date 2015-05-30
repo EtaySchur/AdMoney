@@ -377,7 +377,7 @@ class DbManager {
         $isVideoFound = false;
         /* Getting User General Data */
         $conn = self::connectToDb();
-
+        var_dump("Connecting");
         $sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
         $sql->bindParam('userId', $user_id);
         $sql->execute();
