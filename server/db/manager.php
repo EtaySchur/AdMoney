@@ -377,13 +377,10 @@ class DbManager {
         $isVideoFound = false;
         /* Getting User General Data */
         $conn = self::connectToDb();
-        var_dump("Connecting");
         $sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
         $sql->bindParam('userId', $user_id);
         $sql->execute();
-        var_dump("Fetching");
         $user = $sql->fetch(PDO::FETCH_ASSOC);
-        var_dump($user); exit;
         /* Getting User Categories */
         $sql = $conn->prepare("SELECT * from app_users2categories
                                LEFT JOIN categories
