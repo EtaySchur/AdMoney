@@ -35,7 +35,6 @@ class DbManager {
 		//$dbname = 'MyBlog';
 		//$dbuser = 'root';
 		$pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass ,  array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        var_dump($pdo); exit;
 		return $pdo;
 	}
 
@@ -383,7 +382,7 @@ class DbManager {
         $sql->bindParam('userId', $user_id);
         $sql->execute();
         $user = $sql->fetch(PDO::FETCH_ASSOC);
-
+        var_dump($user); exit;
         /* Getting User Categories */
         $sql = $conn->prepare("SELECT * from app_users2categories
                                LEFT JOIN categories
