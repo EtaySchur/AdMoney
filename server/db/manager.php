@@ -389,7 +389,7 @@ class DbManager {
         $sql->bindParam('userId', $user_id);
         $sql->execute();
         $user['categories'] = $sql->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($user); exit;
+
         foreach($user['categories'] as &$category){
             $sql = $conn->prepare("SELECT * from companies
                                    LEFT JOIN campaigns
@@ -566,7 +566,6 @@ class DbManager {
         $stmt = $conn->query($sql);
         //$stmt->execute();
         //$result = $stmt->fetch();
-        var_dump($result); exit;
         return $result; exit;
 
     }
