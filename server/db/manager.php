@@ -26,7 +26,7 @@ class DbManager {
     /* EC2 */
 
         $dbpass = 'Avishaynimni88';
-        $dbhost = 'ec2-54-76-168-99.eu-west-1.compute.amazonaws.com';
+        $dbhost = '127.0.0.1';
         $dbname = 'MyBlog';
         $dbuser = 'etay';
         /* LOCAL */
