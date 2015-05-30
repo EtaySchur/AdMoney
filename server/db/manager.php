@@ -35,6 +35,7 @@ class DbManager {
 		//$dbname = 'MyBlog';
 		//$dbuser = 'root';
 		$pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass ,  array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        var_dump($pdo); exit;
 		return $pdo;
 	}
 
@@ -377,7 +378,7 @@ class DbManager {
         $isVideoFound = false;
         /* Getting User General Data */
         $conn = self::connectToDb();
-        var_dump($conn); exit;
+
         $sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
         $sql->bindParam('userId', $user_id);
         $sql->execute();
