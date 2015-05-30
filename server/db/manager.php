@@ -381,6 +381,7 @@ class DbManager {
         $sql = $conn->prepare("SELECT * from app_users WHERE id =:userId");
         $sql->bindParam('userId', $user_id);
         $sql->execute();
+        var_dump("Fetching");
         $user = $sql->fetch(PDO::FETCH_ASSOC);
         var_dump($user); exit;
         /* Getting User Categories */
