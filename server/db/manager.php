@@ -371,7 +371,6 @@ class DbManager {
     /* Extension Section */
 
     public static function getUserDetails($user_id) {
-        var_dump("user id ",$user_id);
         $isBronzeFound = false;
         $isSilverFound = false;
         $isGoldFound = false;
